@@ -1,5 +1,7 @@
 package com.bw.dto;
 
+import com.bw.po.Block;
+
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +28,20 @@ public class BlockDetailDTO {
     private Double transactionFees;
 
     private String merkleRoot;
+
+    public BlockDetailDTO(){};
+
+    public BlockDetailDTO(Block block){
+        this.blockhash = block.getBlockhash();
+        this.height = block.getHeight();
+        this.difficulty = block.getDifficulty();
+        this.merkleRoot = block.getMerkleRoot();
+        this.nextBlockhash = block.getNextBlockhash();
+        this.prevBlockhash = block.getPrevBlockhash();
+        this.sizeOnDisk = block.getSizeOnDisk();
+        this.time = block.getTime();
+        this.txSize = block.getTxSize();
+    };
 
     private List<TransactionInBlockDTO> transactions;
 

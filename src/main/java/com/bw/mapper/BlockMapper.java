@@ -20,4 +20,6 @@ public interface BlockMapper {
     int truncate();
 
     List<Block> selectRecent();
+
+    Block getBlockDetail(String blockhash);
 }

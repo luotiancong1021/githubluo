@@ -6,6 +6,7 @@ import com.bw.dto.BlockDetailDTO;
 import com.bw.dto.BlockListDTO;
 import com.bw.mapper.BlockMapper;
 import com.bw.po.Block;
+import com.bw.service.BlockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,9 @@ public class BlockController {
     private BitcoinApi bitcoinApi;
 
     @Autowired
+    private BlockService blockService;
+
+    @Autowired
     private BitcoinJsonRpcClient bitcoinJsonRpcClient;
 
     @Autowired
@@ -33,18 +37,17 @@ public class BlockController {
     @GetMapping("/getRecentBlocks")
     public List<BlockListDTO> getRecentBlocks() throws Throwable {
 
-        List<Block> blocks = blockMapper.selectRecent();
+        List<Block> blocks = blockService.selcectRecent();
         List<BlockListDTO> blockListDTOS = blocks.stream().map(block -> {
             BlockListDTO blockListDTO = new BlockListDTO();
             blockListDTO.setHeight(block.getHeight());
-            blockListDTO.setTime(block.getTime());
+            blockListDTO.setTime(block.getTime().getTime());
             blockListDTO.setTxSize(block.getTxSize());
             blockListDTO.setSizeOnDisk(block.getSizeOnDisk());
             return blockListDTO;
         }).collect(Collectors.toList());
 
         return blockListDTOS;
-
 
 
     }
@@ -57,7 +60,10 @@ public class BlockController {
 
     @GetMapping("/getBlockDetailByHash")
     public BlockDetailDTO getBlockDetailByHash(@RequestParam String blockhash){
-        return null;
+
+       Block block =  blockService.getBlockDetail(blockhash);
+        BlockDetailDTO blockDetailDTO = new BlockDetailDTO(block);
+        return blockDetailDTO;
     }
 
     @GetMapping("/getBlockDetailByHeight")
