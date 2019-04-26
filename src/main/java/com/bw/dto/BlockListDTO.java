@@ -3,6 +3,7 @@ package com.bw.dto;
 import java.util.Date;
 
 public class BlockListDTO {
+    private String blockhash;
     private Integer height;
     private Long time;
     private Integer txSize;
@@ -14,14 +15,6 @@ public class BlockListDTO {
 
     public void setHeight(Integer height) {
         this.height = height;
-    }
-
-    public Long getTime() {
-        return time;
-    }
-
-    public void setTime(Long time) {
-        this.time = time;
     }
 
     public Integer getTxSize() {
@@ -38,5 +31,21 @@ public class BlockListDTO {
 
     public void setSizeOnDisk(Long sizeOnDisk) {
         this.sizeOnDisk = sizeOnDisk;
+    }
+
+    public Long getTime() {
+        return time;
+    }
+
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    public String getBlockhash() {
+        return blockhash;
+    }
+
+    public void setBlockhash(String blockhash) {
+        this.blockhash = blockhash;
     }
 }

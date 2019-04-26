@@ -23,13 +23,13 @@ public class BlockController {
     private BitcoinApi bitcoinApi;
 
     @Autowired
-    private BlockService blockService;
-
-    @Autowired
     private BitcoinJsonRpcClient bitcoinJsonRpcClient;
 
     @Autowired
     private BlockMapper blockMapper;
+
+    @Autowired
+    private BlockService blockService;
 
     @Value("${blockchain.recentCount}")
     private Integer recentCount;
@@ -37,9 +37,10 @@ public class BlockController {
     @GetMapping("/getRecentBlocks")
     public List<BlockListDTO> getRecentBlocks() throws Throwable {
 
-        List<Block> blocks = blockService.selcectRecent();
+        List<Block> blocks = blockService.selectRecent();
         List<BlockListDTO> blockListDTOS = blocks.stream().map(block -> {
             BlockListDTO blockListDTO = new BlockListDTO();
+            blockListDTO.setBlockhash(block.getBlockhash());
             blockListDTO.setHeight(block.getHeight());
             blockListDTO.setTime(block.getTime().getTime());
             blockListDTO.setTxSize(block.getTxSize());
@@ -48,8 +49,6 @@ public class BlockController {
         }).collect(Collectors.toList());
 
         return blockListDTOS;
-
-
     }
 
     @GetMapping("/getRecentBlocksByNameType")
@@ -60,8 +59,7 @@ public class BlockController {
 
     @GetMapping("/getBlockDetailByHash")
     public BlockDetailDTO getBlockDetailByHash(@RequestParam String blockhash){
-
-       Block block =  blockService.getBlockDetail(blockhash);
+        Block block = blockService.getBlockDetail(blockhash);
         BlockDetailDTO blockDetailDTO = new BlockDetailDTO(block);
         return blockDetailDTO;
     }

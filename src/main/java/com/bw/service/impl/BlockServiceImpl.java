@@ -8,20 +8,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
-public class BlockServiceImpl  implements BlockService {
+public class BlockServiceImpl implements BlockService {
+
     @Autowired
     private BlockMapper blockMapper;
 
     @Override
-    public List<Block> selcectRecent() {
+    public List<Block> selectRecent() {
         List<Block> blocks = blockMapper.selectRecent();
         return blocks;
     }
 
     @Override
     public Block getBlockDetail(String blockhash) {
-        Block block = blockMapper.getBlockDetail(blockhash);
+        Block block = blockMapper.selectByPrimaryKey(blockhash);
         return block;
     }
 }
