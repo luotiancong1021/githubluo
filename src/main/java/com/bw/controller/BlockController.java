@@ -7,11 +7,14 @@ import com.bw.dto.BlockListDTO;
 import com.bw.mapper.BlockMapper;
 import com.bw.po.Block;
 import com.bw.service.BlockService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,8 +40,8 @@ public class BlockController {
     @GetMapping("/getRecentBlocks")
     public List<BlockListDTO> getRecentBlocks() throws Throwable {
 
-        List<Block> blocks = blockService.selectRecent();
-        List<BlockListDTO> blockListDTOS = blocks.stream().map(block -> {
+            List<Block> blocks = blockService.selectRecent();
+            List<BlockListDTO> blockListDTOS = blocks.stream().map(block -> {
             BlockListDTO blockListDTO = new BlockListDTO();
             blockListDTO.setBlockhash(block.getBlockhash());
             blockListDTO.setHeight(block.getHeight());
@@ -53,7 +56,11 @@ public class BlockController {
 
     @GetMapping("/getRecentBlocksByNameType")
     public List<BlockListDTO> getRecentBlocksByNameType(@RequestParam String name,
-                                                        @RequestParam String type){
+                                                          @RequestParam String type,Block block,Map<String,Object> map){
+
+        if(block.getBlockhash().equals(" ") && block.getBlockhash().trim()!=""){
+             map.put("name",block.getBlockhash());
+        }
         return null;
     }
 
